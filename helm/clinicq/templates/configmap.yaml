@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "clinicq.fullname" . }}-config
+  labels:
+    {{- include "clinicq.labels" . | nindent 4 }}
+data:
+  DATABASE_URL: "postgresql+psycopg://{{ .Values.postgres.username }}:{{ .Values.postgres.password }}@{{ include "clinicq.fullname" . }}-postgres:5432/{{ .Values.postgres.database }}"
+  BACKEND_HOST: "{{ include "clinicq.fullname" . }}-backend:8000"

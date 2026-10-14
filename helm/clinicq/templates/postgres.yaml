@@ -1,0 +1,116 @@
+# ClinicQ PostgreSQL: credentials Secret, headless data via a PVC-backed
+# StatefulSet so appointment records survive pod restarts.
+apiVersion: v1
+kind: Secret
+metadata:
+  name: {{ include "clinicq.fullname" . }}-postgres
+  labels:
+    {{- include "clinicq.labels" . | nindent 4 }}
+type: Opaque
+stringData:
+  username: {{ .Values.postgres.username | quote }}
+  password: {{ .Values.postgres.password | quote }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "clinicq.fullname" . }}-postgres
+  labels:
+    {{- include "clinicq.labels" . | nindent 4 }}
+    app: clinicq-postgres
+spec:
+  type: ClusterIP
+  clusterIP: None
+  selector:
+    app: clinicq-postgres
+    release: {{ .Release.Name }}
+  ports:
+    - port: 5432
+      targetPort: postgres
+      protocol: TCP
+      name: postgres
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ include "clinicq.fullname" . }}-postgres
+  labels:
+    {{- include "clinicq.labels" . | nindent 4 }}
+    app: clinicq-postgres
+spec:
+  serviceName: {{ include "clinicq.fullname" . }}-postgres
+  replicas: 1
+  selector:
+    matchLabels:
+      app: clinicq-postgres
+      release: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app: clinicq-postgres
+        release: {{ .Release.Name }}
+    spec:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 999
+        fsGroup: 999
+      containers:
+        - name: postgres
+          image: "{{ .Values.postgres.image }}"
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 5432
+              name: postgres
+          env:
+            - name: POSTGRES_DB
+              value: {{ .Values.postgres.database | quote }}
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "clinicq.fullname" . }}-postgres
+                  key: username
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "clinicq.fullname" . }}-postgres
+                  key: password
+            - name: PGDATA
+              value: /var/lib/postgresql/data/pgdata
+          readinessProbe:
+            exec:
+              command: ["sh", "-c", "pg_isready -U $POSTGRES_USER -d $POSTGRES_DB"]
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          livenessProbe:
+            exec:
+              command: ["sh", "-c", "pg_isready -U $POSTGRES_USER -d $POSTGRES_DB"]
+            initialDelaySeconds: 30
+            periodSeconds: 20
+          resources:
+            requests:
+              cpu: 100m
+              memory: 256Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi
+          volumeMounts:
+            - name: clinicq-data
+              mountPath: /var/lib/postgresql/data
+          securityContext:
+            allowPrivilegeEscalation: false
+            runAsNonRoot: true
+            runAsUser: 999
+            capabilities:
+              drop:
+                - ALL
+  volumeClaimTemplates:
+    - metadata:
+        name: clinicq-data
+      spec:
+        accessModes: ["ReadWriteOnce"]
+        {{- if .Values.postgres.storageClassName }}
+        storageClassName: {{ .Values.postgres.storageClassName | quote }}
+        {{- end }}
+        resources:
+          requests:
+            storage: {{ .Values.postgres.storageSize | quote }}

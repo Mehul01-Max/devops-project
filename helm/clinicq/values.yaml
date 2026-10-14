@@ -1,0 +1,57 @@
+# Default values for the ClinicQ chart. Override per environment with
+# values-dev.yaml (kind) or values-eks.yaml (AWS EKS + GHCR images).
+
+namespace: clinicq
+
+backend:
+  image: ghcr.io/mehul01-max/clinicq-backend
+  tag: latest
+  replicas: 2
+  containerPort: 8000
+  resources:
+    requests:
+      cpu: 100m
+      memory: 256Mi
+    limits:
+      cpu: 500m
+      memory: 512Mi
+
+frontend:
+  image: ghcr.io/mehul01-max/clinicq-frontend
+  tag: latest
+  replicas: 2
+  containerPort: 8080
+  backendHost: clinicq-backend:8000
+  resources:
+    requests:
+      cpu: 50m
+      memory: 64Mi
+    limits:
+      cpu: 200m
+      memory: 128Mi
+
+postgres:
+  image: postgres:16-alpine
+  database: clinicq
+  username: clinicq
+  password: clinicq
+  storageSize: 5Gi
+  storageClassName: ""
+
+ingress:
+  enabled: true
+  className: nginx
+  host: clinicq.local
+
+hpa:
+  enabled: true
+  minReplicas: 2
+  maxReplicas: 4
+  targetCPUUtilizationPercentage: 60
+
+monitoring:
+  serviceMonitor:
+    enabled: true
+    # Must match the label the kube-prometheus-stack release selects on.
+    releaseLabel: kube-prometheus-stack
+    interval: 15s
