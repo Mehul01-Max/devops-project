@@ -7,7 +7,7 @@ a **React + Vite** frontend, a **FastAPI** backend, **PostgreSQL**, and a comple
 path to production — Docker, GitHub Actions + Trivy + GHCR, Terraform (VPC + EKS),
 Helm, ingress-nginx, HPA, and Prometheus + Grafana.
 
-- **Author**: Mehul Agarwal
+- **Author**: Mehul Agarwal (Student ID: 24BCS10128)
 - **Repository**: [https://github.com/Mehul01-Max/devops-project](https://github.com/Mehul01-Max/devops-project)
 - **Verified Pipeline Run**: [GitHub Actions Run #8](https://github.com/Mehul01-Max/devops-project/actions/runs/38562736015)
 - **Recorded Walkthrough Video**: [Watch on Loom](https://www.loom.com/share/c31bc8e62f8e462da261286bfc7faf57)
@@ -84,6 +84,8 @@ docker compose up --build
 
 ![Docker Compose Build & Running Containers](images/m4-docker-compose-build.png)
 
+![Docker Compose Services Status](images/m4-docker-compose.png)
+
 Access the running application in your browser:
 - **Frontend**: [http://localhost:3000](http://localhost:3000)
 - **Backend Swagger Docs**: [http://localhost:8000/docs](http://localhost:8000/docs)
@@ -137,6 +139,8 @@ Images are pushed with immutable Git commit SHA tags for complete traceability:
 - `ghcr.io/mehul01-max/clinicq-backend:<commit-sha>`
 - `ghcr.io/mehul01-max/clinicq-frontend:<commit-sha>`
 
+![GHCR Published Packages Overview](images/m5-ghcr-packages.png)
+
 ![GHCR Published Packages with SHA-based Tags](images/m5-ghcr-sha-tags.png)
 
 ---
@@ -150,6 +154,8 @@ Trivy scans both container images in the CI pipeline with:
 
 Both images pass with **0 blocking HIGH or CRITICAL CVEs** through minimal, hardened base images (`python:3.12-slim-trixie` and `nginx-unprivileged:1.31-alpine`) and pinned dependencies.
 
+![Trivy Security Scan Pipeline Step](images/m6-trivy-scan.png)
+
 ![Trivy Security Scan Expanded Clean Output](images/m6-trivy-scan-clean.png)
 
 ---
@@ -161,8 +167,18 @@ Terraform modules located in [`terraform/`](terraform/) provision:
 - **EKS Cluster (`clinicq-eks`)**: AWS EKS 1.34 managed cluster with a managed worker node group.
 - **EBS CSI Driver & IRSA**: IAM OIDC role for dynamic Kubernetes Persistent Volume Claims (`gp3`).
 - **Security**: Variables configured via [`terraform.tfvars.example`](terraform/terraform.tfvars.example); zero credentials stored in Git.
+- **Idempotency**: Clean `terraform plan` execution confirming zero drift (`No changes. Your infrastructure matches the configuration.`).
+- **Teardown**: Automated `terraform destroy` cleanly decommissioning all 59 AWS cloud resources with 0 orphan load balancers.
 
+### AWS Console Verification: EKS & VPC
 ![AWS EKS Console Cluster](images/m7-aws-eks.png)
+
+![AWS VPC and Subnets Console](images/m7-aws-vpc.png)
+
+### Terraform Plan Idempotency & Teardown Verification
+![Terraform Plan Idempotent Verification](images/m7-terraform-plan.png)
+
+![Terraform Destroy Complete and ELB Verification](images/m7-terraform-destroy.png)
 
 ---
 

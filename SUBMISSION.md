@@ -1,7 +1,7 @@
 # Capstone Project Submission & Grading Verification
 
 **Project**: ClinicQ — Clinic Appointment Management System  
-**Author**: Mehul Agarwal  
+**Author**: Mehul Agarwal (Student ID: 24BCS10128)  
 **Repository**: [https://github.com/Mehul01-Max/devops-project](https://github.com/Mehul01-Max/devops-project)  
 **Main Documentation**: [README.md](README.md)  
 **Evaluated Against**: `reference/GRADING.md` (Total 100 Points)
@@ -65,6 +65,8 @@
 
 ![Docker Compose Build & Running Stack](images/m4-docker-compose-build.png)
 
+![Docker Compose Services Status](images/m4-docker-compose.png)
+
 ![Application Loaded at localhost:3000](images/m4-localhost-browser.png)
 
 ---
@@ -80,6 +82,8 @@
 
 ![GitHub Actions Pipeline](images/m5-ci-pipeline.png)
 
+![GHCR Published Packages Overview](images/m5-ghcr-packages.png)
+
 ![GHCR Published Packages with SHA-based Tags](images/m5-ghcr-sha-tags.png)
 
 ---
@@ -90,6 +94,8 @@
 - **Explanation of Scan Findings**:
   > *Trivy scans both the backend (`python:3.12-slim-trixie`) and frontend (`nginxinc/nginx-unprivileged:1.31-alpine`) container images before pushing to GHCR. Both images completed with 0 HIGH or CRITICAL blocking vulnerabilities because minimal, hardened slim and alpine base images were chosen, unnecessary build tools were stripped, and dependencies were strictly pinned.*
 
+![Trivy Security Scan Pipeline Step](images/m6-trivy-scan.png)
+
 ![Trivy Security Scan Expanded Clean Output](images/m6-trivy-scan-clean.png)
 
 ---
@@ -97,11 +103,21 @@
 ## M7 — Terraform: AWS Infrastructure as Code (15 points)
 
 - Terraform modules in `terraform/` provisioned:
-  - Custom VPC with 2 public subnets and 2 private subnets across availability zones with an internet-facing NAT Gateway.
+  - Custom VPC (`10.30.0.0/16`) with 2 public subnets and 2 private subnets across `ap-south-1a` and `ap-south-1b`, route tables, internet gateway, and NAT Gateway.
   - AWS EKS Managed Cluster (`clinicq-eks`) on version 1.34 with a dedicated managed worker node group.
   - EBS CSI IRSA integration for dynamic gp3 persistent volume provisioning.
+  - Idempotent configuration verified via `terraform plan` (`No changes. Your infrastructure matches the configuration.`).
+  - Clean resource teardown verified via `terraform destroy` with zero orphaned resources (`59 destroyed`, 0 ALBs/NLBs remaining).
 
+### AWS Console Verification: EKS & VPC
 ![AWS Console EKS Cluster](images/m7-aws-eks.png)
+
+![AWS Console VPC and Subnets](images/m7-aws-vpc.png)
+
+### Terraform Plan Idempotency & Teardown Verification
+![Terraform Plan Idempotency Output](images/m7-terraform-plan.png)
+
+![Terraform Destroy Complete and Zero Orphaned Load Balancers](images/m7-terraform-destroy.png)
 
 ---
 
