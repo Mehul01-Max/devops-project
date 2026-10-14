@@ -69,6 +69,7 @@
 ## M5 — CI/CD: GitHub Actions Pipeline (15 points)
 
 - Configured in `.github/workflows/ci-cd.yml`, triggering on every push to `main`.
+- **Pipeline Run URL**: [https://github.com/Mehul01-Max/devops-project/actions/runs/38562736015](https://github.com/Mehul01-Max/devops-project/actions/runs/38562736015)
 - **Pipeline Stages**:
   1. `test`: Runs Python 3.12 `pytest -v` and Node 22 `npm run build`.
   2. `build-scan-push`: Builds both images, scans both with Trivy, and pushes SHA-tagged images to GHCR.

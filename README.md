@@ -82,6 +82,8 @@ curl localhost:8000/api/appointments/stats
 3. `deploy`: `helm upgrade --install` to EKS; runs only when repo variable
    `DEPLOY_ENABLED == 'true'` so the pipeline stays green without a cluster.
 
+- **Verified Pipeline Run**: [GitHub Actions Run #8](https://github.com/Mehul01-Max/devops-project/actions/runs/38562736015)
+
 ## Repo structure
 
 ```
