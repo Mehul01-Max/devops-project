@@ -62,7 +62,9 @@
 - **Frontend Dockerfile**: Multi-stage build (`node:22-alpine` build stage and `nginxinc/nginx-unprivileged:1.31-alpine` non-root runtime `USER 101`).
 - **Docker Compose**: Orchestrates `frontend` (:3000), `backend` (:8000), and `postgres` (:5432) with automated healthchecks.
 
-![Docker Compose PS](images/m4-docker-compose.png)
+![Docker Compose Build & Running Stack](images/m4-docker-compose-build.png)
+
+![Application Loaded at localhost:3000](images/m4-localhost-browser.png)
 
 ---
 
@@ -77,7 +79,7 @@
 
 ![GitHub Actions Pipeline](images/m5-ci-pipeline.png)
 
-![GHCR Packages](images/m5-ghcr-packages.png)
+![GHCR Published Packages with SHA-based Tags](images/m5-ghcr-sha-tags.png)
 
 ---
 
@@ -87,7 +89,7 @@
 - **Explanation of Scan Findings**:
   > *Trivy scans both the backend (`python:3.12-slim-trixie`) and frontend (`nginxinc/nginx-unprivileged:1.31-alpine`) container images before pushing to GHCR. Both images completed with 0 HIGH or CRITICAL blocking vulnerabilities because minimal, hardened slim and alpine base images were chosen, unnecessary build tools were stripped, and dependencies were strictly pinned.*
 
-![Trivy Security Scan](images/m6-trivy-scan.png)
+![Trivy Security Scan Expanded Clean Output](images/m6-trivy-scan-clean.png)
 
 ---
 
@@ -120,6 +122,8 @@
 - `kube-prometheus-stack` deployed via Helm with `gp3` storage class.
 - Prometheus scraping target is **`UP`** (`serviceMonitor/clinicq/clinicq-clinicq-backend/0 (2/2 up)`).
 - Custom Grafana dashboard (`ClinicQ Backend`) tracking Request Rate (req/s), p95 latency, 5xx error rate, and container CPU utilization.
+
+![Prometheus Metrics Endpoint Output](images/m9-curl-metrics.png)
 
 ![Prometheus Targets UP](images/m9-prometheus-targets.png)
 
