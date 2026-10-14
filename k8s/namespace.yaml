@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: clinicq
+  labels:
+    app.kubernetes.io/name: clinicq
+    app.kubernetes.io/managed-by: Helm
