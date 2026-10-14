@@ -1,0 +1,67 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: clinicq-grafana-dashboard
+  namespace: clinicq
+  labels:
+    grafana_dashboard: "1"
+    app.kubernetes.io/name: clinicq
+data:
+  clinicq-dashboard.json: |
+    {
+      "title": "ClinicQ Backend",
+      "uid": "clinicq-backend",
+      "timezone": "browser",
+      "schemaVersion": 39,
+      "version": 1,
+      "panels": [
+        {
+          "id": 1,
+          "title": "Request rate (req/s)",
+          "type": "timeseries",
+          "gridPos": {"h": 8, "w": 12, "x": 0, "y": 0},
+          "targets": [
+            {
+              "expr": "sum(rate(http_server_requests_seconds_count{job=\"clinicq-clinicq-backend\"}[5m]))",
+              "legendFormat": "requests/s"
+            }
+          ]
+        },
+        {
+          "id": 2,
+          "title": "p95 latency (s)",
+          "type": "timeseries",
+          "gridPos": {"h": 8, "w": 12, "x": 12, "y": 0},
+          "targets": [
+            {
+              "expr": "histogram_quantile(0.95, sum(rate(http_server_requests_seconds_bucket{job=\"clinicq-clinicq-backend\"}[5m])) by (le))",
+              "legendFormat": "p95"
+            }
+          ]
+        },
+        {
+          "id": 3,
+          "title": "5xx error rate (req/s)",
+          "type": "timeseries",
+          "gridPos": {"h": 8, "w": 12, "x": 0, "y": 8},
+          "targets": [
+            {
+              "expr": "sum(rate(http_server_requests_seconds_count{job=\"clinicq-clinicq-backend\", http_status_code=~\"5..\"}[5m]))",
+              "legendFormat": "5xx/s"
+            }
+          ]
+        },
+        {
+          "id": 4,
+          "title": "Backend pod CPU (cores)",
+          "type": "timeseries",
+          "gridPos": {"h": 8, "w": 12, "x": 12, "y": 8},
+          "targets": [
+            {
+              "expr": "sum(rate(container_cpu_usage_seconds_total{pod=~\"clinicq-.*-backend-.*\", container=\"backend\"}[5m]))",
+              "legendFormat": "cpu cores"
+            }
+          ]
+        }
+      ]
+    }
