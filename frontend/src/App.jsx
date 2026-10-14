@@ -224,7 +224,7 @@ export default function App() {
           <span className="brand-cross">+</span>
           <span>ClinicQ</span>
         </div>
-        <p className="brand-sub">City Care Hospital</p>
+        <p className="brand-sub">City Care Hospital Center</p>
         <nav>
           {SIDEBAR_TABS.map((t) => (
             <button
