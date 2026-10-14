@@ -30,7 +30,10 @@ spec:
               name: http
           env:
             - name: BACKEND_HOST
-              value: {{ .Values.frontend.backendHost | quote }}
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ include "clinicq.fullname" . }}-config
+                  key: BACKEND_HOST
           livenessProbe:
             httpGet:
               path: /

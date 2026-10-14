@@ -79,7 +79,9 @@ jobs:
           context: ./backend
           platforms: linux/amd64
           load: true
-          tags: ${{ env.BACKEND_IMAGE }}:${{ github.sha }}
+          tags: |
+            ${{ env.BACKEND_IMAGE }}:${{ github.sha }}
+            ${{ env.BACKEND_IMAGE }}:latest
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
@@ -89,7 +91,9 @@ jobs:
           context: ./frontend
           platforms: linux/amd64
           load: true
-          tags: ${{ env.FRONTEND_IMAGE }}:${{ github.sha }}
+          tags: |
+            ${{ env.FRONTEND_IMAGE }}:${{ github.sha }}
+            ${{ env.FRONTEND_IMAGE }}:latest
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
@@ -114,7 +118,9 @@ jobs:
       - name: Push images to GHCR
         run: |
           docker push "$BACKEND_IMAGE:${{ github.sha }}"
+          docker push "$BACKEND_IMAGE:latest"
           docker push "$FRONTEND_IMAGE:${{ github.sha }}"
+          docker push "$FRONTEND_IMAGE:latest"
 
   deploy:
     # Stays GREEN with no cluster: flip the DEPLOY_ENABLED repo variable to

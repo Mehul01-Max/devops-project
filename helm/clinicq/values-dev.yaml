@@ -9,7 +9,6 @@ frontend:
   image: clinicq-frontend
   tag: local
   replicas: 2
-  backendHost: clinicq-backend:8000
 
 ingress:
   enabled: true

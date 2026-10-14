@@ -9,7 +9,6 @@ frontend:
   image: ghcr.io/mehul01-max/clinicq-frontend
   tag: latest
   replicas: 2
-  backendHost: clinicq-backend:8000
 
 ingress:
   enabled: true

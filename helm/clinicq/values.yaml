@@ -21,7 +21,6 @@ frontend:
   tag: latest
   replicas: 2
   containerPort: 8080
-  backendHost: clinicq-backend:8000
   resources:
     requests:
       cpu: 50m
