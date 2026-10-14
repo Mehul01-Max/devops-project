@@ -130,4 +130,6 @@
 ## M10 — Documentation & Presentation (5 points)
 
 - Project documentation in `README.md` containing architecture, local development guide, API contracts, deployment instructions, and troubleshooting steps.
+- **Recorded Walkthrough Demo Video**: [https://www.loom.com/share/c31bc8e62f8e462da261286bfc7faf57](https://www.loom.com/share/c31bc8e62f8e462da261286bfc7faf57)
+- **Presentation Deck**: [`ClinicQ DevOps Capstone.pptx`](ClinicQ%20DevOps%20Capstone.pptx) (committed in repository root).
 - Live system verification ready for evaluator demonstration.
