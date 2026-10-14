@@ -3,6 +3,7 @@
 **Project**: ClinicQ — Clinic Appointment Management System  
 **Author**: Mehul Agarwal  
 **Repository**: [https://github.com/Mehul01-Max/devops-project](https://github.com/Mehul01-Max/devops-project)  
+**Main Documentation**: [README.md](README.md)  
 **Evaluated Against**: `reference/GRADING.md` (Total 100 Points)
 
 ---
