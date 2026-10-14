@@ -1,0 +1,26 @@
+# DEMO: selector mismatch - the Service selects pods that do not exist,
+# so the backend gets NO endpoints and the frontend /api proxy returns 502/503.
+# Symptom:  kubectl get endpoints -n clinicq clinicq-broken-service  ->  <none>
+#           curl via ingress /api/... returns 502 Bad Gateway
+# Debug:    kubectl describe svc -n clinicq clinicq-broken-service
+#           kubectl get pods -n clinicq --show-labels
+#           kubectl get endpoints -n clinicq
+#           (compare Service .spec.selector with Pod labels - they differ)
+# Fix:      kubectl patch/edit the Service selector to app=clinicq-backend,
+#           or delete this demo file - the chart's real Services already match.
+apiVersion: v1
+kind: Service
+metadata:
+  name: clinicq-broken-service
+  namespace: clinicq
+  labels:
+    app: clinicq-broken-service
+spec:
+  type: ClusterIP
+  selector:
+    app: label-that-matches-no-pod
+  ports:
+    - port: 8000
+      targetPort: 8000
+      protocol: TCP
+      name: http
