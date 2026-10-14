@@ -115,6 +115,10 @@
 ![AWS Console VPC and Subnets](images/m7-aws-vpc.png)
 
 ### Terraform Plan Idempotency & Teardown Verification
+The initial Terraform plan showed 59 resources to add; a later plan confirmed no drift after apply.
+
+![Terraform Initial Plan: 59 resources to add](images/m7-terraform-plan-create.png)
+
 ![Terraform Plan Idempotency Output](images/m7-terraform-plan.png)
 
 ![Terraform Destroy Complete and Zero Orphaned Load Balancers](images/m7-terraform-destroy.png)
@@ -137,6 +141,7 @@
 
 - FastAPI backend exports Prometheus metrics on `/metrics` via `prometheus-fastapi-instrumentator`.
 - `kube-prometheus-stack` deployed via Helm with `gp3` storage class.
+- Grafana administrator credentials supplied through a Kubernetes Secret, rather than committed values.
 - Prometheus scraping target is **`UP`** (`serviceMonitor/clinicq/clinicq-clinicq-backend/0 (2/2 up)`).
 - Custom Grafana dashboard (`ClinicQ Backend`) tracking Request Rate (req/s), p95 latency, 5xx error rate, and container CPU utilization.
 

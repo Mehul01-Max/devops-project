@@ -1,16 +1,6 @@
-# ClinicQ PostgreSQL: credentials Secret, headless data via a PVC-backed
-# StatefulSet so appointment records survive pod restarts.
+# ClinicQ PostgreSQL reads credentials from a pre-created Secret; data is
+# stored in a PVC-backed StatefulSet so records survive pod restarts.
 apiVersion: v1
-kind: Secret
-metadata:
-  name: {{ include "clinicq.fullname" . }}-postgres
-  labels:
-    {{- include "clinicq.labels" . | nindent 4 }}
-type: Opaque
-stringData:
-  username: {{ .Values.postgres.username | quote }}
-  password: {{ .Values.postgres.password | quote }}
----
 apiVersion: v1
 kind: Service
 metadata:
@@ -67,12 +57,12 @@ spec:
             - name: POSTGRES_USER
               valueFrom:
                 secretKeyRef:
-                  name: {{ include "clinicq.fullname" . }}-postgres
+                  name: {{ .Values.postgres.existingSecret }}
                   key: username
             - name: POSTGRES_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: {{ include "clinicq.fullname" . }}-postgres
+                  name: {{ .Values.postgres.existingSecret }}
                   key: password
             - name: PGDATA
               value: /var/lib/postgresql/data/pgdata

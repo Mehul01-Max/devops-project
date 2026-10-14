@@ -176,6 +176,10 @@ Terraform modules located in [`terraform/`](terraform/) provision:
 ![AWS VPC and Subnets Console](images/m7-aws-vpc.png)
 
 ### Terraform Plan Idempotency & Teardown Verification
+The initial plan showed **59 resources to add**, followed by a later no-drift plan after apply.
+
+![Terraform Initial Plan — 59 resources to add](images/m7-terraform-plan-create.png)
+
 ![Terraform Plan Idempotent Verification](images/m7-terraform-plan.png)
 
 ![Terraform Destroy Complete and ELB Verification](images/m7-terraform-destroy.png)
@@ -189,6 +193,20 @@ The application is packaged as a Helm chart in [`helm/clinicq/`](helm/clinicq/):
 - **Services**: `ClusterIP` exposing frontend (:8080) and backend (:8000).
 - **Ingress**: AWS Network Load Balancer Ingress routing `/` to the React frontend and `/api` to FastAPI.
 - **Autoscaling**: Horizontal Pod Autoscaler (HPA) scaling backend from 2 to 4 pods based on CPU utilization.
+
+Before installing the chart, create the database credential Secret in the target namespace. Keep the password out of chart values and Git:
+
+```bash
+kubectl create namespace clinicq --dry-run=client -o yaml | kubectl apply -f -
+read -s -p 'PostgreSQL password (letters/numbers only): ' POSTGRES_PASSWORD; echo
+kubectl create secret generic clinicq-postgres-credentials -n clinicq \
+  --from-literal=username=clinicq \
+  --from-literal=password="$POSTGRES_PASSWORD" \
+  --from-literal=database_url="postgresql+psycopg://clinicq:${POSTGRES_PASSWORD}@clinicq-clinicq-postgres:5432/clinicq"
+unset POSTGRES_PASSWORD
+```
+
+The same Secret is used by PostgreSQL and the backend. The CI deploy job expects it to exist in the cluster before Helm runs.
 
 ```bash
 # Verify running pods, services and ingress
@@ -223,6 +241,17 @@ curl -i http://localhost:8000/metrics | head -n 30
 
 ### Live Grafana Dashboard
 ![Grafana Live Dashboard](images/m9-grafana-dashboard.png)
+
+The Grafana chart reads its administrator credentials from the pre-created `clinicq-grafana-admin` Secret (`admin-user` and `admin-password` keys). Create this Secret in the monitoring namespace before installing `kube-prometheus-stack`; credentials are not stored in this repository.
+
+```bash
+kubectl create namespace monitoring --dry-run=client -o yaml | kubectl apply -f -
+read -s -p 'Grafana admin password: ' GRAFANA_ADMIN_PASSWORD; echo
+kubectl create secret generic clinicq-grafana-admin -n monitoring \
+  --from-literal=admin-user=admin \
+  --from-literal=admin-password="$GRAFANA_ADMIN_PASSWORD"
+unset GRAFANA_ADMIN_PASSWORD
+```
 
 ---
 

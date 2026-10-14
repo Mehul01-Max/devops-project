@@ -31,9 +31,9 @@ spec:
           env:
             - name: DATABASE_URL
               valueFrom:
-                configMapKeyRef:
-                  name: {{ include "clinicq.fullname" . }}-config
-                  key: DATABASE_URL
+                secretKeyRef:
+                  name: {{ .Values.postgres.existingSecret }}
+                  key: database_url
           livenessProbe:
             httpGet:
               path: /health
