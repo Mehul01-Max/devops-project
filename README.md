@@ -107,5 +107,3 @@ helm upgrade --install clinicq ./helm/clinicq -n clinicq --create-namespace -f h
 echo "127.0.0.1 clinicq.local" | sudo tee -a /etc/hosts
 curl http://clinicq.local/api/appointments/stats
 ```
-# devops-project
-# devops-project
