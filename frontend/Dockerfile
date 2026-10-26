@@ -8,6 +8,10 @@ RUN npm run build
 
 FROM nginxinc/nginx-unprivileged:1.31-alpine
 
+USER root
+RUN apk update && apk upgrade --no-cache
+USER 101
+
 # envsubst renders BACKEND_HOST at container start so the same image
 # works in Compose (backend:8000) and Kubernetes (clinicq-backend:8000).
 COPY nginx.conf.template /etc/nginx/templates/default.conf.template
