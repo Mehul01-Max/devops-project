@@ -10,7 +10,7 @@ Helm, ingress-nginx, HPA, and Prometheus + Grafana.
 - **Author**: Mehul Agarwal (Student ID: 24BCS10128)
 - **Repository**: [https://github.com/Mehul01-Max/devops-project](https://github.com/Mehul01-Max/devops-project)
 - **Verified Pipeline Run**: [GitHub Actions Run #8](https://github.com/Mehul01-Max/devops-project/actions/runs/38562736015)
-- **Recorded Walkthrough Video**: [Watch on Loom](https://www.loom.com/share/c31bc8e62f8e462da261286bfc7faf57)
+- **Demo & Presentation**: [`demo/`](demo/) folder containing [Slide Deck](demo/ClinicQ%20DevOps%20Capstone.pptx) & [Video Walkthrough](demo/README.md) ([Watch on Loom](https://www.loom.com/share/c31bc8e62f8e462da261286bfc7faf57))
 - **Grading Verification Checklist**: [SUBMISSION.md](SUBMISSION.md)
 
 ---
@@ -257,6 +257,7 @@ unset GRAFANA_ADMIN_PASSWORD
 
 ## 9. Final Presentation & Walkthrough Demo
 
-- **Recorded Walkthrough Video**: [Watch on Loom](https://www.loom.com/share/c31bc8e62f8e462da261286bfc7faf57) (Full demonstration of App $\to$ Git Commit $\to$ CI/CD Pipeline $\to$ Trivy Scan $\to$ GHCR $\to$ Kubernetes Deployment $\to$ Prometheus/Grafana)
-- **Slide Deck**: [`ClinicQ DevOps Capstone.pptx`](ClinicQ%20DevOps%20Capstone.pptx) (available in repository root)
+All presentation and demonstration assets are organized under the [`demo/`](demo/) folder:
+- **Recorded Walkthrough Video**: [Watch on Loom](https://www.loom.com/share/c31bc8e62f8e462da261286bfc7faf57) (Documented in [`demo/README.md`](demo/README.md) and [`demo/VIDEO_LINK.md`](demo/VIDEO_LINK.md) — Full demonstration of App $\to$ Git Commit $\to$ CI/CD Pipeline $\to$ Trivy Scan $\to$ GHCR $\to$ Kubernetes Deployment $\to$ Prometheus/Grafana)
+- **Slide Deck**: [`ClinicQ DevOps Capstone.pptx`](demo/ClinicQ%20DevOps%20Capstone.pptx) (available inside `demo/` folder)
 - **Detailed Rubric Checklist**: See [SUBMISSION.md](SUBMISSION.md) for 1-to-1 grading verification across all 10 modules.

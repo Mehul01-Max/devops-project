@@ -156,6 +156,7 @@ The initial Terraform plan showed 59 resources to add; a later plan confirmed no
 ## M10 — Documentation & Presentation (5 points)
 
 - Project documentation in `README.md` containing architecture, local development guide, API contracts, deployment instructions, and troubleshooting steps.
-- **Recorded Walkthrough Demo Video**: [https://www.loom.com/share/c31bc8e62f8e462da261286bfc7faf57](https://www.loom.com/share/c31bc8e62f8e462da261286bfc7faf57)
-- **Presentation Deck**: [`ClinicQ DevOps Capstone.pptx`](ClinicQ%20DevOps%20Capstone.pptx) (committed in repository root).
+- **Demo & Presentation Directory**: [`demo/`](demo/) containing both the presentation deck and video walkthrough link.
+- **Recorded Walkthrough Demo Video**: [Watch on Loom](https://www.loom.com/share/c31bc8e62f8e462da261286bfc7faf57) (documented in [`demo/README.md`](demo/README.md) and [`demo/VIDEO_LINK.md`](demo/VIDEO_LINK.md)).
+- **Presentation Deck**: [`ClinicQ DevOps Capstone.pptx`](demo/ClinicQ%20DevOps%20Capstone.pptx) (located in `demo/` folder).
 - Live system verification ready for evaluator demonstration.
