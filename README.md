@@ -1,6 +1,6 @@
 # ClinicQ — Clinic Appointment Booking Dashboard
 
-[![ClinicQ CI/CD](https://github.com/Mehul01-Max/devops-project/actions/workflows/ci-cd.yml/badge.svg)](https://github.com/Mehul01-Max/devops-project/actions/workflows/ci-cd.yml)
+[![ClinicQ CI/CD](https://github.com/Mehul01-Max/devops-project/actions/workflows/ci-cd.yml/badge.svg?branch=main)](https://github.com/Mehul01-Max/devops-project/actions/workflows/ci-cd.yml)
 
 ClinicQ is a SaaS-style clinic appointment dashboard used as a DevOps capstone:
 a **React + Vite** frontend, a **FastAPI** backend, **PostgreSQL**, and a complete
